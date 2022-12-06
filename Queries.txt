@@ -1,0 +1,45 @@
+ /* Query 1 */
+
+Top 10 Albums based on sales?
+
+SELECT Album.AlbumId, Album.Title,Artist.Name AS Artist_Name, SUM(Track.UnitPrice *InvoiceLine.Quantity) AS Sales
+FROM Artist 
+JOIN Album  ON Artist.ArtistId = Album.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+JOIN InvoiceLine 
+ON InvoiceLine.TrackId= Track.TrackId
+GROUP BY Album.AlbumId
+ORDER BY Sales DESC
+LIMIT 10;
+
+
+/* Query 2 */
+
+most invoices by country
+
+ SELECT (Customer.Country) as Country , count(Invoice.InvoiceId) as invoices
+FROM Invoice
+INNER JOIN Customer on Invoice.CustomerId =Customer.CustomerId
+GROUP by Country ORDER by invoices DESC LIMIT 10;
+
+/* Query 3 */
+
+TOP 10 ARTIST WHITH THE MOST Albums 
+
+ SELECT (Artist.Name)  AS "Artist Name"  , count(Album.ArtistId) as "Albums count"
+FROM Album
+ JOIN Artist on Album.ArtistId =Artist.ArtistId 
+GROUP by Artist.Name ORDER by "Albums count" DESC LIMIT 10;
+
+/* Query 4 */
+
+ Who is writing the Jazz music?
+
+SELECT  Artist.Name, COUNT(Track.Name) AS "Number of Songs"
+FROM Artist
+JOIN Album ON Album.ArtistId = Artist.ArtistId
+JOIN Track ON Album.AlbumId = Track.AlbumId
+JOIN Genre ON Track.GenreId = Genre.GenreId
+WHERE Genre.Name = 'Jazz'
+GROUP BY Artist.ArtistId, Artist.Name, Genre.Name
+ORDER BY "Number of Songs" DESC LIMIT 5;
